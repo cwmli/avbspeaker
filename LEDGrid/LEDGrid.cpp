@@ -29,8 +29,13 @@ void LEDGrid::doEffect() {
 	FastLED.show();
 }
 
+Effects LEDGrid::getEffect() {
+	return currentEffect;
+}
+
 void LEDGrid::selectEffect(Effects effect) {
 	currentEffect = effect;
+	resetActiveLeds();
 }
 
 void LEDGrid::setBrightness(uint8_t b) {

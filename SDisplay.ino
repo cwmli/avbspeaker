@@ -4,14 +4,18 @@
 
 // SPECIAL CLASS FOR HANDLING VISUAL EQUALIZER
 
-#define FHT_N   256
+#define FHT_N   128
 #define LOG_OUT 1
 
 #include <FHT.h>
 
-#define STEPS   14
+#define STEPS  7
+
+// adjust for circuit noise
+static const int noise[] = { 125, 65, 115, 95, 65, 105, 100, 70, 100 };
 
 class VEqualizer {
+  
     public:
         VEqualizer() {
             displayString = NULL;
@@ -108,7 +112,9 @@ class VEqualizer {
             fht_run();
             fht_mag_log();
             sei();
-            /*for (int i = 0; i< FHT_N / 2; i++) {
+            /*for (int i = 0; i < FHT_N / 2; i++) {
+              Serial.print(i);
+              Serial.print(" : ");
               Serial.print(fht_log_out[i]);
               Serial.print("\n");
             }*/
@@ -123,13 +129,27 @@ class VEqualizer {
             int intensity_avg = 0;
             // capture the average intensities
             for (int i = 0; i < FHT_N / 2; i++) {
-                if (fht_log_out[i] > 20) { //base
+                if (fht_log_out[i] > 50) { //base
                   intensity_avg += fht_log_out[i];
                 }
 
                 // working with 9 steps (FHT_N / 2) / COLUMNS
-                if (i % STEPS == 0) {
-                    intensity[(i / STEPS) - 1] = intensity_avg / 250;
+                if (i > 0 && i % STEPS == 0) {
+                    /*Serial.print((i / STEPS) - 1);
+                    Serial.print(" : ");
+                    Serial.print((double)intensity_avg / STEPS);
+                    Serial.print(" n ");
+                    Serial.print(noise[(i / STEPS) - 1]);
+                    Serial.print(" = ");*/
+                    
+                    double in = ((double)intensity_avg / STEPS) - (double)noise[(i / STEPS) - 1];
+                    // adjust for circuit noise
+                    double ain = in > 0 ? (in / 35) * 6 : 0;
+
+                    //Serial.print(ain);
+                    //Serial.print("\n");
+
+                    intensity[(i / STEPS) - 1] = ain;
                     intensity_avg = 0;
                 }
             }
@@ -138,7 +158,7 @@ class VEqualizer {
         
             // populate the LED grid
             for (uint8_t c = 0; c < COLUMNS; c++) {
-                for (uint8_t r = 0; r < intensity[c]; r++) {
+                for (uint8_t r = 0; r < intensity[c]; r++) { 
                     setActiveLed(r, c, 2);
                 }
             }

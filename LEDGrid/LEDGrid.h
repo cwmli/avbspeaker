@@ -7,7 +7,7 @@
 
 #define LED_PIN     10
 #define NUM_LEDS    ROWS * COLUMNS
-#define BRIGHTNESS  64//2   // this is the default brightness
+#define BRIGHTNESS  16//2   // this is the default brightness
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
 
@@ -25,11 +25,15 @@ enum Effects {
     CLOCK
 };
 
+static const enum Effects EffectsMap[] = { ROWTRIX, DOTS, EQ };
+
 class LEDGrid {
 
     public:
 		// doEffect() runs the effect during arduino update (call this in void loop())
 		void doEffect();
+
+		Effects getEffect();
 
 		// selectEffect(effect) choose a display effect on the LED Grid
 		void selectEffect(Effects effect);
