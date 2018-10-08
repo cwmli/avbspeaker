@@ -7,7 +7,7 @@
 
 #define LED_PIN     10
 #define NUM_LEDS    ROWS * COLUMNS
-#define BRIGHTNESS  16//2   // this is the default brightness
+#define BRIGHTNESS  32//2   // this is the default brightness
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
 
@@ -22,10 +22,11 @@ enum Effects {
     ROWTRIX,
     DOTS,
     EQ,
+	LIGHT,
     CLOCK
 };
 
-static const enum Effects EffectsMap[] = { ROWTRIX, DOTS, EQ };
+static const enum Effects EffectsMap[] = { ROWTRIX, DOTS, EQ, LIGHT };
 
 class LEDGrid {
 
@@ -53,6 +54,8 @@ class LEDGrid {
 		// fadeRate: controls smoothness
 		void rowtrix(uint8_t colorIndex, uint8_t spread, uint8_t spreadSpd, uint8_t spreadRate,
 					 uint8_t fadeSpd, uint8_t fadeRate);
+
+		void solid();
     
 		// text(string, scroll, scrollSpd) displays text in string to led grid
 		void text(char *string, bool scroll, int scrollSpd);

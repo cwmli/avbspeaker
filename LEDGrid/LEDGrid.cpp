@@ -9,22 +9,25 @@ void LEDGrid::doEffect() {
 	}
 	else if (currentEffect == Effects::DOTS) {
 		rowtrix(startIndex, random(3), 20, 3, 15, 10);
+	} else if (currentEffect == Effects::LIGHT) {
+		// SOLID: currentEffect == Effects::LIGHT
+		solid();
 	}
-	else if (currentEffect == Effects::CLOCK) {
-		clk.update();
-		clock(clk.getTime(), true);
-	}
-	else {
-		// VISUAL EQUALIZER
+	// else if (currentEffect == Effects::CLOCK) {
+	// 	clk.update();
+	// 	clock(clk.getTime(), true);
+	// }
+	// else {
+	// 	// VISUAL EQUALIZER
 
-		// Text can be overlayed on top:
-		// Example text display
-		// char str[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		// text(str, true, 200);
+	// 	// Text can be overlayed on top:
+	// 	// Example text display
+	// 	// char str[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	// 	// text(str, true, 200);
 
-		//vEQ.setText(NULL, true, 200);
-		//equalizer();
-	}
+	// 	//vEQ.setText(NULL, true, 200);
+	// 	//equalizer();
+	// }
 
 	FastLED.show();
 }
@@ -89,6 +92,16 @@ void LEDGrid::rowtrix(uint8_t colorIndex, uint8_t spread, uint8_t spreadSpd, uin
 					leds[gridIndex(r, c)].fadeToBlackBy(fadeRate);
 				}
 			}
+		}
+	}
+}
+
+void LEDGrid::solid() {
+	resetActiveLeds();
+
+	for (uint8_t r = 0; r < ROWS; r++) {
+		for (uint8_t c = 0; c < COLUMNS; c++) {
+			leds[gridIndex(r,c)] = ColorFromPalette(lowLightClockPalette_p, 0);
 		}
 	}
 }

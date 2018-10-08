@@ -12,7 +12,7 @@
 #define STEPS  7
 
 // adjust for circuit noise
-static const int noise[] = { 125, 65, 115, 95, 65, 105, 100, 70, 100 };
+static const int noise[] = { 190, 115, 100, 90, 75, 65, 70, 70, 65 };
 
 class VEqualizer {
   
@@ -112,12 +112,12 @@ class VEqualizer {
             fht_run();
             fht_mag_log();
             sei();
-            /*for (int i = 0; i < FHT_N / 2; i++) {
-              Serial.print(i);
-              Serial.print(" : ");
-              Serial.print(fht_log_out[i]);
-              Serial.print("\n");
-            }*/
+//            for (int i = 0; i < FHT_N / 2; i++) {
+//              Serial.print(i);
+//              Serial.print(" : ");
+//              Serial.print(fht_log_out[i]);
+//              Serial.print("\n");
+//            }
         }
 
         // updateFrequencyData() sets active leds w/ value of 2 based on the
